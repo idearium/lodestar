@@ -66,7 +66,7 @@ route53
     .promise()
     .then(() => {
 
-        return log(`OTE running at ${protocol}//${hostname}:${port}`);
+        return log(`OTE running at ${protocol}//${config.get('DOMAIN')}:{port}`);
 
     })
     .catch(err => error(err));

@@ -1,0 +1,10 @@
+# This is the codefresh composition definition for running lodestar-app on Codefresh.
+
+version: '2'
+services:
+  app:
+    environment:
+      - GO_DNSMASQ_RUNAS=root
+    ports:
+      - '80'
+    image: idearium/lodestar-app

@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "lodestar",
+  "version": "1.0.0",
+  "description": "A shining start that shows the way to a Codefresh on-demand test environment.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idearium/lodestar.git"
+  },
+  "author": "Scott Mebberson",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/idearium/lodestar/issues"
+  },
+  "homepage": "https://github.com/idearium/lodestar#readme",
+  "dependencies": {
+    "@idearium/eslint-config": "^1.1.0"
+  }
+}

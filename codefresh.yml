@@ -1,0 +1,27 @@
+version: '1.0'
+
+steps:
+
+  # Build the lodestar-app image
+  AppImage:
+    title: Building lodestar-app Docker image
+    type: build
+    image_name: idearium/lodestar-app
+    working_directory: ./app
+    dockerfile: Dockerfile
+    tag: ${{CF_BRANCH_VERSION_NORMALIZED}}
+
+  # Conditionally deploy the lodestar-app:latest image
+  DeployLatestAppImageToDockerHub:
+    title: Pushing lodestar-app (latest) to Docker Hub
+    type: push
+    candidate: ${{AppImage}}
+    image_name: idearium/lodestar-app
+    tag: latest
+    credentials:
+      username: '${{DOCKER_USERNAME}}'
+      password: '${{DOCKER_PASSWORD}}'
+    when:
+      condition:
+        all:
+          notBetaBranch: 'includes(lower("${{CF_BRANCH}}"), "beta") != true'

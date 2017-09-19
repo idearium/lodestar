@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  app:
+    build: ./app
+    environment:
+      - GO_DNSMASQ_RUNAS=root
+      - VIRTUAL_HOST=lodestar.local
+    expose:
+      - "80"
+
+networks:
+  default:
+    external:
+      name: idearium-dev-network

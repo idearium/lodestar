@@ -34,7 +34,7 @@ if (!config.get(serviceUrlEnv)) {
 }
 
 // Retrieve the domain only, from the service URL.
-const { host } = parse(config.get(serviceUrlEnv));
+const { hostname, protocol, port } = parse(config.get(serviceUrlEnv));
 
 // Load in the AWS access credentials
 AWS.config.loadFromPath('./aws.json');
@@ -47,7 +47,7 @@ const params = {
                 Action: 'UPSERT',
                 ResourceRecordSet: {
                     Name: config.get('DOMAIN'),
-                    ResourceRecords: [{ Value: host }],
+                    ResourceRecords: [{ Value: hostname }],
                     TTL: config.get('TTL') || 60,
                     Type: config.get('TYPE') || 'CNAME',
                 },
@@ -64,5 +64,9 @@ const route53 = new AWS.Route53();
 route53
     .changeResourceRecordSets(params)
     .promise()
-    .then(data => log(data))
+    .then(() => {
+
+        return log(`OTE running at ${protocol}//${hostname}:${port}`);
+
+    })
     .catch(err => error(err));

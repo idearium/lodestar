@@ -34,6 +34,10 @@ Customise the following environment variables:
 - `HOSTED_ZONE_ID` should be the Route53 hosted zone ID.
 - `SERVICE` should be the name of the composition service exposing HTTP/HTTPS.
 
+### Custom domains
+
+By default, Lodestar uses the `DOMAIN` environment variable for Route53 configuration. However, if you'd like to specify a domain that is different from the default in the composition, simply set the `LAUNCH_DOMAIN` variable in the Codefresh Composition variables popup, to override the default.
+
 ## Development
 
 The following documents how to get started developing the lodestar image.

@@ -4,6 +4,9 @@ const { parse } = require('url');
 const AWS = require('aws-sdk');
 const config = require('nconf');
 
+// Make nconf use an in-memory store.
+config.use('memory');
+
 // As simple log function.
 /* eslint-disable no-console */
 const log = (...args) => console.log(...args);

@@ -3,8 +3,14 @@
 version: '2'
 services:
   app:
+    image: idearium/lodestar-app
     environment:
       - GO_DNSMASQ_RUNAS=root
     ports:
       - '80'
-    image: idearium/lodestar-app
+  lodestar:
+    image: idearium/lodestar
+    environment:
+      - DOMAIN=lodestar.idearium.io
+      - HOSTED_ZONE_ID=Z7O63FVGCNZNH
+      - SERVICE=APP

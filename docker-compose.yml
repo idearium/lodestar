@@ -11,7 +11,7 @@ services:
   lodestar:
     build: ./lodestar
     environment:
-      - DOMAIN=lodestar.idearium.io
+      - DOMAINS=lodestar.idearium.io,lodestar-2.idearium.io
       - HOSTED_ZONE_ID=Z7O63FVGCNZNH
       - SERVICE=APP
       - CF_URL_APP=http://foo.cf-cd.com:80/someurl

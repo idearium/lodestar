@@ -23,20 +23,22 @@ To configure Lodestar in a Codefresh OTE, add the following to a Codefresh compo
 lodestar:
     image: idearium/lodestar
     environment:
-      - DOMAIN=lodestar.idearium.io
+      - DOMAINS=lodestar.idearium.io
       - HOSTED_ZONE_ID=Z7O63FVGCNZNH
       - SERVICE=APP
 ```
 
 Customise the following environment variables:
 
-- `DOMAIN` should be the domain you want to update in Route53.
+- `DOMAINS` should be the domain you want to update in Route53.
 - `HOSTED_ZONE_ID` should be the Route53 hosted zone ID.
 - `SERVICE` should be the name of the composition service exposing HTTP/HTTPS.
 
+Lodestar supports multiple domains, simply by separating them by a comma (i.e. `DOMAIN=lodestar.idearium.io,lodestar-ote.idearium.io`).
+
 ### Custom domains
 
-By default, Lodestar uses the `DOMAIN` environment variable for Route53 configuration. However, if you'd like to specify a domain that is different from the default in the composition, simply set the `LAUNCH_DOMAIN` variable in the Codefresh Composition variables popup, to override the default.
+By default, Lodestar uses the `DOMAINS` environment variable for Route53 configuration. However, if you'd like to specify a domain that is different from the default in the composition, simply set the `LAUNCH_DOMAINS` variable in the Codefresh Composition variables popup, to override the default.
 
 ## Development
 

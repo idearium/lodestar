@@ -13,15 +13,8 @@ const log = (...args) => console.log(...args);
 const error = (...args) => console.error(...args);
 /* eslint-enable no-console */
 
-// Temporary.
-// eslint-disable-next-line no-process-env
-const allVars = process.env;
-const keys = Object.keys(allVars);
-
-keys.forEach(key => log(key, allVars[key]));
-
 // The environment variables we need.
-const envVars = ['DOMAIN', 'HOSTED_ZONE_ID', 'SERVICE'];
+const envVars = ['DOMAINS', 'HOSTED_ZONE_ID', 'SERVICE'];
 
 // Load environment variables
 config.env();
@@ -44,32 +37,37 @@ if (!config.get(serviceUrlEnv)) {
 }
 
 // Retrieve the domain only, from the service URL.
-const { hostname, protocol, port } = parse(config.get(serviceUrlEnv));
+const { hostname, protocol } = parse(config.get(serviceUrlEnv));
 
-// Support a temporary LAUNCH_DOMAIN environment variable.
-// LAUNCH_DOMAIN supersedes DOMAIN environment variable.
-if (config.get('LAUNCH_DOMAIN')) {
-    config.set('DOMAIN', config.get('LAUNCH_DOMAIN'));
+// Support a temporary LAUNCH_DOMAINS environment variable.
+// LAUNCH_DOMAINS supersedes DOMAINS environment variable.
+if (config.get('LAUNCH_DOMAINS')) {
+    config.set('DOMAINS', config.get('LAUNCH_DOMAINS'));
 }
 
 // Load in the AWS access credentials
 AWS.config.loadFromPath('./aws.json');
 
+// Create a change object for each domain
+const changes = config.get('DOMAINS')
+    .split(',')
+    .map((domain) => {
+
+        return {
+            Action: 'UPSERT',
+            ResourceRecordSet: {
+                Name: domain,
+                ResourceRecords: [{ Value: hostname }],
+                TTL: config.get('TTL') || 60,
+                Type: config.get('TYPE') || 'CNAME',
+            },
+        };
+
+    });
+
 // Create the ChangeBatch.
 const params = {
-    ChangeBatch: {
-        Changes: [
-            {
-                Action: 'UPSERT',
-                ResourceRecordSet: {
-                    Name: config.get('DOMAIN'),
-                    ResourceRecords: [{ Value: hostname }],
-                    TTL: config.get('TTL') || 60,
-                    Type: config.get('TYPE') || 'CNAME',
-                },
-            },
-        ],
-    },
+    ChangeBatch: { Changes: changes },
     HostedZoneId: config.get('HOSTED_ZONE_ID'),
 };
 
@@ -82,7 +80,7 @@ route53
     .promise()
     .then(() => {
 
-        return log(`OTE running at ${protocol}//${config.get('DOMAIN')}:{port}`);
+        return log(`OTE running at ${protocol}//${config.get('DOMAINS')}:{port}`);
 
     })
     .catch(err => error(err));

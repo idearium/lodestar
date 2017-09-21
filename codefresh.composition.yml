@@ -11,6 +11,6 @@ services:
   lodestar:
     image: idearium/lodestar
     environment:
-      - DOMAIN=lodestar.idearium.io
+      - DOMAINS=lodestar.idearium.io,lodestar-ote.idearium.io
       - HOSTED_ZONE_ID=Z7O63FVGCNZNH
       - SERVICE=APP

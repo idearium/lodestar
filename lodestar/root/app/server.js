@@ -19,6 +19,17 @@ const envVars = ['DOMAINS', 'HOSTED_ZONE_ID', 'SERVICE'];
 // Load environment variables
 config.env();
 
+// You can set `DEBUG` to turn on debugging of all environment variables.
+if (config.get('DEBUG')) {
+
+    // eslint-disable-next-line no-process-env
+    const allVars = process.env;
+    const keys = Object.keys(allVars);
+
+    keys.forEach(key => log(key, allVars[key]));
+
+}
+
 // Make sure we have everything we need before moving forward
 envVars.forEach((envVar) => {
 

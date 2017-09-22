@@ -40,6 +40,10 @@ Lodestar supports multiple domains, simply by separating them by a comma (i.e. `
 
 By default, Lodestar uses the `DOMAINS` environment variable for Route53 configuration. However, if you'd like to specify a domain that is different from the default in the composition, simply set the `LAUNCH_DOMAINS` variable in the Codefresh Composition variables popup, to override the default.
 
+### Debugging
+
+If you'd like to see all of the environment variables provided to Lodestar, set `DEBUG=true` and they'll be output to the console.
+
 ## Development
 
 The following documents how to get started developing the lodestar image.

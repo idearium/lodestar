@@ -25,12 +25,14 @@ lodestar:
     environment:
       - DOMAINS=lodestar.idearium.io
       - HOSTED_ZONE_ID=Z7O63FVGCNZNH
+      - LAUNCH_DOMAINS=$LAUNCH_DOMAINS
 ```
 
 Customise the following environment variables:
 
 - `DOMAINS` should be the domain you want to update in Route53.
 - `HOSTED_ZONE_ID` should be the Route53 hosted zone ID.
+- `LAUNCH_DOMAINS` is required and should be left as is.
 
 Lodestar supports multiple domains, simply by separating them by a comma (i.e. `DOMAIN=lodestar.idearium.io,lodestar-ote.idearium.io`).
 

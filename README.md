@@ -25,14 +25,12 @@ lodestar:
     environment:
       - DOMAINS=lodestar.idearium.io
       - HOSTED_ZONE_ID=Z7O63FVGCNZNH
-      - SERVICE=APP
 ```
 
 Customise the following environment variables:
 
 - `DOMAINS` should be the domain you want to update in Route53.
 - `HOSTED_ZONE_ID` should be the Route53 hosted zone ID.
-- `SERVICE` should be the name of the composition service exposing HTTP/HTTPS.
 
 Lodestar supports multiple domains, simply by separating them by a comma (i.e. `DOMAIN=lodestar.idearium.io,lodestar-ote.idearium.io`).
 

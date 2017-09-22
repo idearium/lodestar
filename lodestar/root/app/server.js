@@ -14,7 +14,7 @@ const error = (...args) => console.error(...args);
 /* eslint-enable no-console */
 
 // The environment variables we need.
-const envVars = ['DOMAINS', 'HOSTED_ZONE_ID', 'SERVICE'];
+const envVars = ['DOMAINS', 'HOSTED_ZONE_ID', 'CF_HOST_NAME'];
 
 // Load environment variables
 config.env();
@@ -39,17 +39,6 @@ envVars.forEach((envVar) => {
 
 });
 
-// Create the ENV string for the service URL.
-const serviceUrlEnv = `CF_URL_${config.get('SERVICE')}`;
-
-// Make sure we have the SERVICE URL environment variable.
-if (!config.get(serviceUrlEnv)) {
-    throw new Error(`Could not find environment variable ${serviceUrlEnv}`);
-}
-
-// Retrieve the domain only, from the service URL.
-const { hostname, protocol } = parse(config.get(serviceUrlEnv));
-
 // Support a temporary LAUNCH_DOMAINS environment variable.
 // LAUNCH_DOMAINS supersedes DOMAINS environment variable.
 if (config.get('LAUNCH_DOMAINS')) {
@@ -68,7 +57,7 @@ const changes = config.get('DOMAINS')
             Action: 'UPSERT',
             ResourceRecordSet: {
                 Name: domain,
-                ResourceRecords: [{ Value: hostname }],
+                ResourceRecords: [{ Value: config.get('CF_HOST_NAME') }],
                 TTL: config.get('TTL') || 60,
                 Type: config.get('TYPE') || 'CNAME',
             },
@@ -91,7 +80,7 @@ route53
     .promise()
     .then(() => {
 
-        return log(`OTE running at ${protocol}//${config.get('DOMAINS')}:{port}`);
+        return log(`OTE running at //${config.get('DOMAINS')}`);
 
     })
     .catch(err => error(err));

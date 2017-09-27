@@ -3,6 +3,14 @@
   "name": "lodestar",
   "version": "1.0.0",
   "description": "A shining start that shows the way to a Codefresh on-demand test environment.",
+  "scripts": {
+    "docker": "c dc pull && c dc build",
+    "stop": "c dc down",
+    "postinstall": "devops/setup.js",
+    "rebuild": "c dc build && npm start",
+    "start": "docker-compose up",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/idearium/lodestar.git"
@@ -13,7 +21,13 @@
     "url": "https://github.com/idearium/lodestar/issues"
   },
   "homepage": "https://github.com/idearium/lodestar#readme",
-  "dependencies": {
-    "@idearium/eslint-config": "^1.1.0"
+  "devDependencies": {
+    "@idearium/cli": "1.0.0-alpha.9",
+    "@idearium/eslint-config": "latest",
+    "eslint": "4.7.1",
+    "execa": "0.8.0",
+    "hostile": "1.3.0",
+    "listr": "0.12.0",
+    "sudo-prompt": "7.1.1"
   }
 }

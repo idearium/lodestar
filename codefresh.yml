@@ -1,0 +1,83 @@
+version: '1.0'
+
+steps:
+
+  # Build the lodestar-app image
+  AppImage:
+    title: Building lodestar-app Docker image
+    type: build
+    image_name: idearium/lodestar-app
+    working_directory: ./app
+    dockerfile: Dockerfile
+    tag: ${{CF_BRANCH_VERSION_NORMALIZED}}
+
+  # Build the lodestar image
+  LodestarImage:
+    title: Building lodestar Docker image
+    type: build
+    image_name: idearium/lodestar
+    working_directory: ./lodestar
+    dockerfile: Dockerfile
+    tag: ${{CF_BRANCH_VERSION_NORMALIZED}}
+
+  # Conditionally deploy the lodestar-app:latest image
+  DeployLatestAppImageToDockerHub:
+    title: Pushing lodestar-app (latest) to Docker Hub
+    type: push
+    candidate: ${{AppImage}}
+    image_name: idearium/lodestar-app
+    tag: latest
+    credentials:
+      username: '${{DOCKER_USERNAME}}'
+      password: '${{DOCKER_PASSWORD}}'
+    when:
+      condition:
+        all:
+          notBetaBranch: 'includes(lower("${{CF_BRANCH}}"), "beta") != true'
+
+  # Conditionally deploy the lodestar:beta image
+  DeployBetaLodestarImageToDockerHub:
+    title: Pushing lodestar (beta) to Docker Hub
+    type: push
+    candidate: ${{LodestarImage}}
+    image_name: idearium/lodestar
+    tag: beta
+    credentials:
+      username: '${{DOCKER_USERNAME}}'
+      password: '${{DOCKER_PASSWORD}}'
+    when:
+      condition:
+        all:
+          betaBranch: 'includes(lower("${{CF_BRANCH}}"), "beta") == true'
+          isTag: 'match("${{CF_BRANCH}}", "^v([0-9].){2}[0-9](-beta.[0-9]{1,3})?$", true) == true'
+
+  # Conditionally deploy the lodestar:latest image
+  DeployLatestLodestarImageToDockerHub:
+    title: Pushing lodestar (latest) to Docker Hub
+    type: push
+    candidate: ${{LodestarImage}}
+    image_name: idearium/lodestar
+    tag: latest
+    credentials:
+      username: '${{DOCKER_USERNAME}}'
+      password: '${{DOCKER_PASSWORD}}'
+    when:
+      condition:
+        all:
+          notBetaBranch: 'includes(lower("${{CF_BRANCH}}"), "beta") != true'
+          # isTag: 'match("${{CF_BRANCH}}", "^v([0-9].){2}[0-9](-beta.[0-9]{1,3})?$", true) == true'
+
+  # Conditionally deploy the lodestar:${{CF_BRANCH}} image
+  DeployTaggedLodestarImageToDockerHub:
+    title: Pushing lodestar (tagged) to Docker Hub
+    type: push
+    candidate: ${{LodestarImage}}
+    image_name: idearium/lodestar
+    tag: ${{CF_BRANCH_VERSION_NORMALIZED}}
+    credentials:
+      username: '${{DOCKER_USERNAME}}'
+      password: '${{DOCKER_PASSWORD}}'
+    when:
+      condition:
+        all:
+          isTag: 'match("${{CF_BRANCH}}", "^v([0-9].){2}[0-9](-beta.[0-9]{1,3})?$", true) == true'

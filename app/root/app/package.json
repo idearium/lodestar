@@ -1,0 +1,12 @@
+{
+  "name": "lodestar-app",
+  "version": "1.0.0",
+  "description": "An example app for the lodestar project.",
+  "main": "server.js",
+  "author": "Scott Mebberson",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idearium/lodestar.git"
+  }
+}

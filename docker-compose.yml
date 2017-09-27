@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  app:
+    build: ./app
+    environment:
+      - GO_DNSMASQ_RUNAS=root
+      - VIRTUAL_HOST=lodestar.local
+    expose:
+      - "80"
+  lodestar:
+    build: ./lodestar
+    environment:
+      - DOMAINS=lodestar.idearium.io,lodestar-2.idearium.io
+      - HOSTED_ZONE_ID=Z7O63FVGCNZNH
+      - CF_HOST_NAME=test-foo.cf-cd.com
+
+networks:
+  default:
+    external:
+      name: idearium-dev-network

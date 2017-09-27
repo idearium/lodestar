@@ -1,0 +1,16 @@
+{
+  "name": "lodestar",
+  "version": "1.0.0",
+  "description": "An app to dynamically update Route53 DNS.",
+  "main": "server.js",
+  "author": "Scott Mebberson",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idearium/lodestar.git"
+  },
+  "dependencies": {
+    "aws-sdk": "2.118.0",
+    "nconf": "0.8.4"
+  }
+}
